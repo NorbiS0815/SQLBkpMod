@@ -21,19 +21,15 @@ BEGIN
 	DECLARE @CleanupMode varchar(25)
 	DECLARE @CleanupTimeHours int
 
-	SET @DefaultPath = (select [Value] FROM BackupSettings WHERE Setting = 'defaultpath')
-	SET @MirrorPath = (select [Value] FROM BackupSettings WHERE Setting = 'mirrorpath')
-	SET @ChangeBackupType = (select [Value] FROM BackupSettings WHERE Setting = 'ChangeBackupType')
-	SET @Compress = (select [Value] FROM BackupSettings WHERE Setting = 'Compression')
-	SET @LogToTable = (select [Value] FROM BackupSettings WHERE Setting = 'LogToTable')
-	SET @CleanupMode = (select [Value] FROM BackupSettings WHERE Setting = 'CleanupMode')
-	SET @CleanupTimeHours = (select [Value] FROM BackupSettings WHERE Setting = 'CleanupTimeHours')
-
     -- Insert Update DB Table
 	exec .dbo.UpdateLocalDatabases	
 	
 	-- For each DB check if Backup necessary
 	-- FULL
+	-- if no Backup was done (LastBackupFull is NULL)
+	-- if Day and Time ist set
+	-- if Active = True 
+	-- if in Availgroup and Server is backup prefered
 	DECLARE @retVal int
 	DECLARE @DB varchar(265)
 	DECLARE C cursor for 
@@ -73,6 +69,7 @@ BEGIN
 	DEALLOCATE c
 		
 	-- DIFF
+	-- if Full was done and all other days
 	DECLARE C cursor for 
 		Select DBName,DefaultPath,MirrorPath,LogToTable,Compression,CleanupMode,CleanupTimeHours
 		from localdatabases
@@ -109,6 +106,7 @@ BEGIN
 	DEALLOCATE c
 	
 	-- TLOG
+        -- if last Backup time >= LogbackupInterval
 	DECLARE C cursor for 
 		Select DBName,DefaultPath,MirrorPath,LogToTable,Compression,CleanupMode,CleanupTimeHours
 		from localdatabases 
