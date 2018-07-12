@@ -1,13 +1,5 @@
-USE [_WIT-AdminDB]
 
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-
-USE [_WIT-AdminDB]
-
-/* ------------------------------------------------------ CreateTables for Backup  ----------------------------------------------- */
+/* ------------------------------------------------------ CreateTables for Backupsolution  ----------------------------------------------- */
 IF OBJECT_ID('BackupSettings', 'U') IS NOT NULL 
   DROP TABLE dbo.BackupSettings; 
 GO
@@ -32,8 +24,6 @@ INSERT INTO BackupSettings ( [Setting], [Value] ) VALUES
 ('LogToTable','Y'),
 ('MirrorPath','\\RSQL-Bkp.isiresi.wstw.energy-it.net\RSQL_Bkp\SQL')
 
-
-
 IF OBJECT_ID('LocalDatabases', 'U') IS NOT NULL 
   DROP TABLE dbo.LocalDatabases; 
 
@@ -49,7 +39,7 @@ CREATE TABLE [dbo].[LocalDatabases](
 	[Recoverymodel] [tinyint] NULL,
 	[Databasetype] [varchar](1) NULL,
 	[DoBackup] [bit] NULL,
-	[Availgroupname] [varchar](256) NULL,
+	[AvailgroupName] [varchar](256) NULL,
 	[AvailgroupBackup] [bit] NULL,
 	[CreationDate] [datetime] NULL,
 	[UpdateDate] [datetime] NULL,
@@ -81,7 +71,7 @@ ALTER TABLE [dbo].[LocalDatabases] ADD  CONSTRAINT [DF_Databases_DoBackup]  DEFA
 
 ALTER TABLE [dbo].[LocalDatabases] ADD  CONSTRAINT [DF_LocalDatabases_Active]  DEFAULT ((1)) FOR [Active]
 	
-/* ------------------------------------------------------ Create Trigger  ----------------------------------------------- */
+/*    --------------------------------------------------- Create Trigger  -----------------------------------------------       */
 GO
 
 IF object_id('_WIT_ResetBackupIfAGChanged') IS NULL
