@@ -1,5 +1,3 @@
-USE [_WIT-AdminDB]
-GO
 
 IF object_id('UpdateLocalDatabases') IS NULL
     EXEC ('create procedure dbo.UpdateLocalDatabases as select 1')
@@ -7,7 +5,6 @@ IF object_id('UpdateLocalDatabases') IS NULL
 GO 
 
 ALTER PROCEDURE [dbo].[UpdateLocalDatabases]
-	
 AS
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
