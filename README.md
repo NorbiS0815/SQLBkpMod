@@ -8,3 +8,8 @@ in terms of comfortability. That's why we've expanded the solution for our purpo
 We have created a table that we update daily. The Table that contains database names as well as other (for us) important parameters.
 Our guidelines are: a full backup once a week, an incremental daily and TLog backups depending on the database mode and usage.
 For the full backup, there is usually a time frame or a time from which the full may be started.
+
+Since we did not want to modify the original scripts, we built the solution on top and therefore did not pay attention to duplication or optimization possibilities.
+Also, this is a tailored solution for us, which means that we intercept errors only conditionally
+
+(I hope that my translationprogram did everything right)
