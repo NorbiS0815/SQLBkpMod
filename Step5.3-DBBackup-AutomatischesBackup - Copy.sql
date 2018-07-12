@@ -1,5 +1,4 @@
-USE [_WIT-AdminDB]
-GO
+/* We created a job running every hour with this SP */
 
 IF object_id('WIT_AutomatischesBackup') IS NULL
     EXEC ('create procedure dbo.WIT_AutomatischesBackup as select 1')
