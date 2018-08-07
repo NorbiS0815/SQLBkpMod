@@ -33,15 +33,20 @@ BEGIN
 	DECLARE @DB varchar(265)
 	DECLARE C cursor for 
 			Select distinct DBName,DefaultPath,MirrorPath,LogToTable,Compression,CleanupMode,CleanupTimeHours
-			from localdatabases where
+			from localdatabases 
+			where
 			(Active = 1) and
-			(Dobackup = 1) and (AvailgroupBackup = 1) and 
-			((Lastbackupfull is null) or (
-				(datename(w,Getdate()) = FullBackupDay) and
-				( (Lastbackupfull is null) or 
-					((cast (getdate() as float) - floor(cast(getdate() as float)) > cast (FullBackupStartTime as float) - floor(cast (FullBackupStartTime as float))) 
-						and Lastbackupfull < DATEADD(dd, DATEDIFF(dd, 0, getdate()), 0)	)
-				)))
+			(Dobackup = 1) and 
+			(AvailgroupBackup = 1) and 
+			(
+				(Lastbackupfull is null) or 
+				(
+					(datename(w,Getdate()) = FullBackupDay) and
+					(cast (getdate() as float) - floor(cast(getdate() as float)) > cast (FullBackupStartTime as float) - floor(cast (FullBackupStartTime as float)))
+					or 
+					Lastbackupfull < DATEADD(dd, DATEDIFF(dd, 7, getdate()), 0)
+				)
+			)
 	open c
 	FETCH NEXT FROM c INTO @DB,@DefaultPath,@MirrorPath,@LogToTable,@Compress,@CleanupMode,@CleanupTimeHours
 	WHILE @@FETCH_STATUS = 0 BEGIN
